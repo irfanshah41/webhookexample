@@ -53,21 +53,15 @@ namespace MarkAttendance
             StreamReader reader = new StreamReader(read);
             string readToEnd = reader.ReadToEnd();
             string data = HttpUtility.UrlDecode(readToEnd);
-/*            StreamWriter wtr = new StreamWriter(@"H:\check.txt",false);
+            StreamWriter wtr = new StreamWriter(@"H:\check.txt",false);
             wtr.WriteLine(data);
-            wtr.Close();*/
-            Handle_ payload = JsonConvert.DeserializeObject<Handle_>(JsonConvert.SerializeObject(data));
-            string[] splitData = data.Split('=');
-            string fullData="";
-            for (int i = 1; i < splitData.Length; i++)
-            {
-                fullData = fullData + splitData[i];
-            }
+            wtr.Close();
+            string fullData = data.Remove(0, 8);
             JObject dataJobject = JObject.Parse(fullData);
-           JToken token=dataJobject["pusher"];
+            JToken token=dataJobject["pusher"];
+            DateTime Datetime = DateTime.Now;
+            postAttendance(token["email"].ToString(), null, Datetime.ToString("yyyy-MM-dd T HH:mm:ss"), 6);
             return token["email"].ToString();
-           
-    
         }
         
         public List<string> postAttendance(string email, string user_id, string timeIn, int location)
@@ -76,8 +70,6 @@ namespace MarkAttendance
             DateTime TimeIn = DateTime.Now;
             List<string> values = new List<string>();
             TimeSpan work;
-           
-
             try
             {
                 if (timeIn.CompareTo("") != 0)
@@ -150,7 +142,7 @@ namespace MarkAttendance
                    };
                     newAttendance.marked_at.Add(TimeIn);
                     values.Add(user_id);
-                    toServerPost(newAttendance, "","POST");
+         //           toServerPost(newAttendance, "","POST");
                 }
                 else
                 {
@@ -574,15 +566,5 @@ namespace MarkAttendance
 
         [JsonProperty("default_out")]
         public string default_out { get; set; }
-    }
-
-
- 
-
-    public class Handle_
-    {
-        public string payload { get; set; }
-       
-
     }
 }
