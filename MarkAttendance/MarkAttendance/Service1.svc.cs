@@ -31,14 +31,14 @@ namespace MarkAttendance
 
 
         IBucket bucket;
-        Dictionary<string, AttendanceReport> dictionary;
+       
 
         public Service1()
         {
 
 
             bucket = Cluster.OpenBucket("Testing");
-            dictionary = new Dictionary<string, AttendanceReport>();
+          
 
         }
 
@@ -53,10 +53,19 @@ namespace MarkAttendance
             StreamReader reader = new StreamReader(read);
             string readToEnd = reader.ReadToEnd();
             string data = HttpUtility.UrlDecode(readToEnd);
-            StreamWriter wtr = new StreamWriter(@"H:\check.txt",false);
+/*            StreamWriter wtr = new StreamWriter(@"H:\check.txt",false);
             wtr.WriteLine(data);
-            wtr.Close();
-            return "";
+            wtr.Close();*/
+            Handle_ payload = JsonConvert.DeserializeObject<Handle_>(JsonConvert.SerializeObject(data));
+            string[] splitData = data.Split('=');
+            string fullData="";
+            for (int i = 1; i < splitData.Length; i++)
+            {
+                fullData = fullData + splitData[i];
+            }
+            JObject dataJobject = JObject.Parse(fullData);
+           JToken token=dataJobject["pusher"];
+            return token["email"].ToString();
            
     
         }
@@ -568,23 +577,12 @@ namespace MarkAttendance
     }
 
 
-    public class AttendanceReport
+ 
+
+    public class Handle_
     {
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public int location { get; set; }
-
-        public List<Attendance> attendances { get; set; }
-
-
-    }
-
-    public class Attendance
-    {
-        public string date { get; set; }
-        public string time_in { get; set; }
-        public string time_out { get; set; }
-        public int location { get; set; }
+        public string payload { get; set; }
+       
 
     }
 }
