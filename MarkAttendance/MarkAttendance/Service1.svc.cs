@@ -47,6 +47,20 @@ namespace MarkAttendance
             return "working...";
         }
 
+        public string postFunction(Stream read)
+        {
+ 
+            StreamReader reader = new StreamReader(read);
+            string readToEnd = reader.ReadToEnd();
+            string data = HttpUtility.UrlDecode(readToEnd);
+            StreamWriter wtr = new StreamWriter(@"H:\check.txt",false);
+            wtr.WriteLine(data);
+            wtr.Close();
+            return "";
+           
+    
+        }
+        
         public List<string> postAttendance(string email, string user_id, string timeIn, int location)
         {
             var queryRequest = new QueryRequest();

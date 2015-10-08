@@ -29,6 +29,9 @@ namespace MarkAttendance
         List<string> getDeleteDocIdsFromView();
 
         [OperationContract]
+        [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "postFunction")]      
+        string postFunction(System.IO.Stream read);
+        [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
         // TODO: Add your service operations here
