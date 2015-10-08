@@ -142,7 +142,7 @@ namespace MarkAttendance
                    };
                     newAttendance.marked_at.Add(TimeIn);
                     values.Add(user_id);
-         //           toServerPost(newAttendance, "","POST");
+                    toServerPost(newAttendance, "","POST");
                 }
                 else
                 {
